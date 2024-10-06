@@ -1,14 +1,23 @@
 import React, { useRef, useState, useEffect } from "react";
 import starsData from "./stars.json";
+import { Button } from "./ui/button";
 
 const StarCanvas = () => {
   const canvasRef = useRef(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [stars, setStars] = useState(starsData);
-  const [connections, setConnections] = useState([]);
   const [draggingStar, setDraggingStar] = useState(null);
   const [hoveredStar, setHoveredStar] = useState(null); // State for the hovered star
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 }); // State for tooltip position
+  const [connections, setConnections] = useState(() => {
+    // Load connections from localStorage if they exist
+    const savedConnections = localStorage.getItem("connections");
+    return savedConnections ? JSON.parse(savedConnections) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("connections", JSON.stringify(connections));
+  }, [connections]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -90,6 +99,11 @@ const StarCanvas = () => {
     }
   };
 
+  const clearConnections = () => {
+    localStorage.removeItem("connections");
+    setConnections([]);
+  };
+
   return (
     <div>
       <canvas
@@ -118,6 +132,14 @@ const StarCanvas = () => {
           {hoveredStar}
         </div>
       )}
+
+      <Button
+        className="absolute left-[10px] bottom-[10px]"
+        variant="destructive"
+        onClick={clearConnections}
+      >
+        Clear Constellations
+      </Button>
     </div>
   );
 };
