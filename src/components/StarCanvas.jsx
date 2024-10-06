@@ -1,3 +1,4 @@
+"use client";
 import React, { useRef, useState, useEffect } from "react";
 import starsData from "./stars.json";
 import { Button } from "./ui/button";
@@ -9,14 +10,23 @@ const StarCanvas = () => {
   const [draggingStar, setDraggingStar] = useState(null);
   const [hoveredStar, setHoveredStar] = useState(null); // State for the hovered star
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 }); // State for tooltip position
-  const [connections, setConnections] = useState(() => {
-    // Load connections from localStorage if they exist
-    const savedConnections = localStorage.getItem("connections");
-    return savedConnections ? JSON.parse(savedConnections) : [];
-  });
+  const [connections, setConnections] = useState([]);
 
+  // Load connections from localStorage on the client side
   useEffect(() => {
-    localStorage.setItem("connections", JSON.stringify(connections));
+    if (typeof localStorage !== "undefined") {
+      const savedConnections = localStorage.getItem("connections");
+      if (savedConnections) {
+        setConnections(JSON.parse(savedConnections));
+      }
+    }
+  }, []);
+
+  // Save connections to localStorage whenever they change
+  useEffect(() => {
+    if (typeof localStorage !== "undefined") {
+      localStorage.setItem("connections", JSON.stringify(connections));
+    }
   }, [connections]);
 
   useEffect(() => {
