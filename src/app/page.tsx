@@ -9,7 +9,7 @@ export default function StarrySky() {
 
 
   return (
-    <div className="flex justify-between align-top">
+    <div className="md:flex block justify-between align-top">
       <StarCanvas />
       <StarChat />
     </div>
