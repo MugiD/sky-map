@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,6 +30,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
       >
+        <a
+          href="https://exoplanets123.netlify.app"
+          className={cn(buttonVariants(), "absolute top-[10px] right-[10px] font-mono")}
+          target="_blank"
+        >
+          View Exoplanets
+        </a>
         {children}
       </body>
     </html>
